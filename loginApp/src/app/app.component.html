@@ -1,0 +1,23 @@
+<mat-toolbar>
+  My App
+  <span fxFlex></span>
+  <div>
+    <button mat-button routerLink="/auth/login">
+      <mat-icon>input</mat-icon>
+      &nbsp;Sign In
+    </button>
+    <button mat-button routerLink="/auth/register">
+      <mat-icon>person_add</mat-icon>
+      &nbsp;Sign Up
+    </button>
+
+    <button mat-icon-button routerLink="/main/people">
+      <mat-icon>home</mat-icon>
+    </button>
+    <button mat-icon-button routerLink="/main/products">
+      <mat-icon>shop</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+
+<router-outlet></router-outlet>
