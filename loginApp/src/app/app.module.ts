@@ -7,7 +7,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MaterialModule } from './material/material.module';
 import { MainModule } from './main/main.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+
+import { AuthInterceptor } from './services/auth.interceptor';
+
 import { AuthModule } from './auth/auth.module';
 
 @NgModule({
@@ -18,9 +21,11 @@ import { AuthModule } from './auth/auth.module';
     BrowserAnimationsModule,
     MaterialModule,
     HttpClientModule,
-    AuthModule,
+    AuthModule.forRoot(),
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -7,5 +7,6 @@ export interface User {
   mobilePhone: string;
   email: string;
   password: string;
+  token?: string;
   _id: string;
 }
