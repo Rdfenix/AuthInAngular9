@@ -66,6 +66,22 @@ const AuthController = {
       next();
     });
   },
+  userData: (req, res) => {
+    const token = req.get('Authorization');
+    jwt.verify(token, variables.keyJWT, (err, decode) => {
+      const id = decode._id;
+      UserModel.findById(id)
+        .lean()
+        .exec((err, user) => {
+          if (err || !user) {
+            return res.status(500).json({
+              message: 'Error when trying to fetch user data',
+              error: err,
+            });
+          }
+        });
+    });
+  },
 };
 
 module.exports = AuthController;

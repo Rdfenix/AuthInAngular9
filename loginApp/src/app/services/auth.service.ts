@@ -36,10 +36,9 @@ export class AuthService {
     return this.subjUser$.asObservable();
   }
 
-  logout() {
+  logout(): void {
     localStorage.removeItem('token');
     this.subLoggedIn$.next(false);
     this.subjUser$.next(null);
   }
-  
 }
