@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from './../../environments/environment';
 import { User } from './../models/user';
 
@@ -29,7 +29,27 @@ export class AuthService {
   }
 
   isAuthenticated(): Observable<boolean> {
+    const token = localStorage.getItem('token');
+    if (token && !this.subLoggedIn$.value) {
+      return this.checkTokenValidation();
+    }
     return this.subLoggedIn$.asObservable();
+  }
+
+  checkTokenValidation(): Observable<boolean> {
+    return this.http.get<User>(`${this.url}/user`).pipe(
+      tap((user: User) => {
+        if (user) {
+          this.subLoggedIn$.next(true);
+          this.subjUser$.next(user);
+        }
+      }),
+      map((user: User) => (user ? true : false)),
+      catchError((error) => {
+        this.logout();
+        return of(false);
+      })
+    );
   }
 
   getUser(): Observable<User> {
